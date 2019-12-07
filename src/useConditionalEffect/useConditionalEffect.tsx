@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import useLatest from '../useLatest'
-import { Optional } from '../utils'
+import { Optional } from '../shared'
 
 type CleanupCallback = () => void
 type ConditionalEffectCallback = () => Optional<CleanupCallback>

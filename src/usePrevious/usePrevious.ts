@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Optional } from '../utils'
+import { Optional } from '../shared'
 
 function usePrevious<T>(value: T): Optional<T> {
     const ref = useRef<Optional<T>>();

@@ -1,15 +1,10 @@
-import React, { useEffect, useRef } from "react";
+import { useRef } from "react";
 import usePrevious from '../usePrevious'
-import { Nullable } from '../utils'
+import { DeltaArray } from '../shared'
 
 const range = (n: number) => [...Array(n).keys()]
 
-interface Delta<T> {
-    prev?: T
-    curr: T
-}
-
-function useDeltaArray<T>(valueArray: T[]): Nullable<Delta<T>>[] {
+function useDeltaArray<T extends any[]>(valueArray: T): DeltaArray<T> {
   const originalArrayLength = useRef(valueArray.length)
 
   if (valueArray.length !== originalArrayLength.current) {
@@ -18,7 +13,7 @@ function useDeltaArray<T>(valueArray: T[]): Nullable<Delta<T>>[] {
 
   const prevArray = usePrevious(valueArray)
 
-  let deltas: Nullable<Delta<T>>[] = range(originalArrayLength.current).map((i) => {
+  let deltas = range(originalArrayLength.current).map((i) => {
     if (!prevArray) {
       return {
         curr: valueArray[i]
@@ -35,7 +30,7 @@ function useDeltaArray<T>(valueArray: T[]): Nullable<Delta<T>>[] {
     }
   })
 
-  return deltas
+  return deltas as DeltaArray<T>
 };
 
 export default useDeltaArray
