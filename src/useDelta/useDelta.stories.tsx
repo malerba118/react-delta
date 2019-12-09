@@ -14,14 +14,14 @@ export const PrimitiveState = () => {
 
     useEffect(() => {
         action('Count delta')(countDelta);
-    })
+    });
 
     return (
         <div>
             <button onClick={() => setCount(c => c + 1)}>Increment: {count}</button>
             <button onClick={() => setUnrelatedState(p => !p)}>Toggle Unrelated State: {unrelatedState}</button>
         </div>
-    )
+    );
 };
 
 export const ObjectStateShallow = () => {
@@ -32,14 +32,14 @@ export const ObjectStateShallow = () => {
 
     useEffect(() => {
         action('Count delta')(countDelta);
-    })
+    });
 
     return (
         <div>
             <button onClick={() => setState(s => ({count: s.count + 1}))}>Increment: {JSON.stringify(state)}</button>            
             <button onClick={() => setUnrelatedState(p => !p)}>Toggle Unrelated State: {unrelatedState}</button>
         </div>
-    )
+    );
 };
 
 
@@ -51,12 +51,12 @@ export const ObjectStateDeep = () => {
 
     useEffect(() => {
         action('Count delta')(countDelta);
-    })
+    });
 
     return (
         <div>
             <button onClick={() => setState(s => ({count: s.count + 1}))}>Increment: {JSON.stringify(state)}</button>            
             <button onClick={() => setUnrelatedState(p => !p)}>Toggle Unrelated State: {unrelatedState}</button>
         </div>
-    )
+    );
 };
