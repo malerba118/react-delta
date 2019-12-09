@@ -10,19 +10,26 @@
 npm install --save react-delta
 ```
 
-## Usage
+## API
 
-```tsx
-import * as React from 'react'
+### `useConditionalEffect(callback, condition)`
 
-import MyComponent from 'react-delta'
+Runs an effect when the condition is true. If the effect returns a cleanup function, the cleanup function will run before the next effect.
 
-class Example extends React.Component {
-  render () {
-    return (
-      <MyComponent />
-    )
-  }
+* **`callback`**: **required** a function that will execute if the condition is true. This callback can return a cleanup function.
+* **`condition`**: **optional [default true]** a boolean indicating whether the effect should run. The effect callback executes when the condition is true.
+
+### Usage
+
+```jsx
+import { useConditionalEffect } from 'react-delta'
+
+const useEvenCountLogger = (count) => {
+
+  useConditionalEffect(() => {
+    console.log(count)
+  }, count % 2 === 0) 
+
 }
 ```
 
