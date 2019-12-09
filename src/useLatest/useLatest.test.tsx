@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { mount } from 'enzyme'
 import useLatest from './useLatest'
 

@@ -1,11 +1,9 @@
 import { MutableRefObject } from 'react'
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 
 function useLatest<T>(value: T): MutableRefObject<T> {
     const ref = useRef(value);
-    useEffect(() => {
-      ref.current = value;
-    });
+    ref.current = value;
     return ref;
 }
 

@@ -1,7 +1,6 @@
 
-import { flatten } from '../utils'
-function every(...args: any[]): boolean {
-    return flatten(args).every((delta: any) => !!delta);
+function every(array: any[]): boolean {
+    return array.every((val) => !!val);
 };
   
 export default every

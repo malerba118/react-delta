@@ -1,73 +1,28 @@
 import every from './every'
 
 describe('every', () => {
-  it('should accept variable length args', () => {
+  it('should be true if all truthy', () => {
     expect(
-        every(true, true, true, true, true)
+        every([true, [], {}, 'true', 1])
     ).toBe(
         true
     )
   })
 
-  it('should flatten args', () => {
+  it('should be false if any falsey', () => {
     expect(
-        every(true, [true])
-    ).toBe(
-        true
-    )
-
-    expect(
-        every(true, [false])
+        every([true, [], {}, 'true', 0])
     ).toBe(
         false
     )
   })
 
-  it('should accept array only', () => {
+  it('should be true if empty array', () => {
     expect(
-        every([true, true])
+        every([])
     ).toBe(
         true
     )
-
-    expect(
-        every([true, false])
-    ).toBe(
-        false
-    )
   })
 
-  it('should only care about truthy/falsey', () => {
-    expect(
-        every('a', 1)
-    ).toBe(
-        true
-    )
-
-    expect(
-        every('a', 1, null)
-    ).toBe(
-        false
-    )
-
-    expect(
-        every('a', 1, [undefined])
-    ).toBe(
-        false
-    )
-  })
-
-  it('nested should work', () => {
-    expect(
-        every(true, every(true, [true]))
-    ).toBe(
-        true
-    )
-
-    expect(
-        every(true, every(true, [false]))
-    ).toBe(
-        false
-    )
-  })
 })

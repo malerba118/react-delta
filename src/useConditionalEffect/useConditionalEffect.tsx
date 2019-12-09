@@ -1,9 +1,8 @@
 import { useEffect, useRef } from "react";
 import useLatest from '../useLatest'
-import { Optional } from '../shared'
 
 type CleanupCallback = () => void
-type ConditionalEffectCallback = () => Optional<CleanupCallback>
+type ConditionalEffectCallback = () => CleanupCallback | void
 
 function useConditionalEffect(callback: ConditionalEffectCallback, condition: boolean = true) {
   // update to truthyCount should cause update to run
