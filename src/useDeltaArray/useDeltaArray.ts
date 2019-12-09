@@ -5,11 +5,11 @@ import isEqual from 'lodash.isequal';
 
 const range = (n: number) => [...Array(n).keys()];
 
-interface DeltaOptions {
+interface Options {
   deep?: boolean;
 }
 
-function useDeltaArray<T extends any[]>(valueArray: T, { deep = false }: DeltaOptions = {}): DeltaArray<T> {
+function useDeltaArray<T extends any[]>(valueArray: T, { deep = false }: Options = {}): DeltaArray<T> {
   const originalArrayLength = useRef(valueArray.length);
 
   if (valueArray.length !== originalArrayLength.current) {

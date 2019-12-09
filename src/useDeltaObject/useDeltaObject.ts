@@ -1,14 +1,14 @@
 import useDeltaArray from '../useDeltaArray';
-import { Nullable, Delta } from '../shared';
+import { DeltaObject } from '../shared';
 
-type DeltaObject<T extends {}> = {
-    [k in keyof T]: Nullable<Delta<T[k]>>
-}
+interface Options {
+  deep?: boolean;
+}  
 
-function useDeltaObject<T extends {}>(obj: T): DeltaObject<T> {
+function useDeltaObject<T extends {}>(obj: T, { deep = false }: Options = {}): DeltaObject<T> {
     const keys = Object.keys(obj);
     const values = Object.values(obj);
-    const deltas = useDeltaArray(values);
+    const deltas = useDeltaArray(values, { deep });
     const deltasObj = {};
     deltas.forEach((delta, i) => {
       deltasObj[keys[i]] = delta;

@@ -1,8 +1,12 @@
 import useDeltaArray from '../useDeltaArray';
 import { Nullable, Delta } from '../shared';
 
-function useDelta<T>(value: T): Nullable<Delta<T>>  {
-    const [delta] = useDeltaArray([value]);
+interface Options {
+    deep?: boolean;
+}  
+
+function useDelta<T>(value: T, { deep = false }: Options = {}): Nullable<Delta<T>>  {
+    const [delta] = useDeltaArray([value], { deep });
     return delta;
 }
 

@@ -1,34 +1,9 @@
 import React, { useState } from 'react';
 import { action } from '@storybook/addon-actions';
 import useConditionalEffect from './useConditionalEffect';
-import useDelta from '../useDelta';
 
 export default {
     title: 'useConditionalEffect'
-};
-
-export const PrimitiveState = () => {
-    const [count, setCount] = useState(0);
-
-    const countDelta = useDelta(count);
-
-    useConditionalEffect(() => {
-        action('count changed')(countDelta);
-    }, Boolean(countDelta));
-
-    return <button onClick={() => setCount(c => c + 1)}>Increment: {count}</button>;
-};
-
-export const ObjectState = () => {
-    const [state, setState] = useState({ count: 0 });
-
-    const countDelta = useDelta(state);
-
-    useConditionalEffect(() => {
-        action('count changed')(countDelta);
-    }, Boolean(countDelta));
-
-    return <button onClick={() => setState(s => ({count: s.count + 1}))}>Increment: {state.count}</button>;
 };
 
 export const NoEffectIfFalse = () => {

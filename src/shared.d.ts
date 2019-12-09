@@ -9,3 +9,7 @@ export interface Delta<T> {
 export type DeltaArray<T extends any[]> = {
     [k in keyof T]: Nullable<Delta<T[k]>>
 }
+
+export type DeltaObject<T extends {}> = {
+    [k in keyof T]: Nullable<Delta<T[k]>>
+}
