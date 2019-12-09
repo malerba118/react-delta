@@ -10,6 +10,96 @@
 npm install --save react-delta
 ```
 
+## Overview
+If you've used `useEffect` extensively, you've surely found yourself in tricky situations. For example, maybe you've wanted access to a value from a previous render to know *how* a variable has changed since the last render and not just that it *has* changed. Or maybe the linter has yelled at you to include all dependencies in the `useEffect` dependency array, but doing so would cause your effect to run too frequently. Or maybe you've wanted to use deep equality to trigger an effect instead of shallow equality. Or maybe you've had to store values in refs in order to access the latest value inside of `useEffect`. The problem with `useEffect` is that it limits your ability to compare old values to new values. `react-delta` gives you delta utilities to determine exactly when and how variables have changed across renders as well as the ability to run effects based on these deltas.
+
+## Scenario
+You want to log when the window width has increased and when it has decreased. Below we see how we might approach this problem traditionally, and how we can better approach it using `react-delta`.
+
+### Traditional Solution
+```jsx
+function LogWindowGrowth() {
+  const { width } = useWindowSize();
+  const prevWidth = useRef();
+
+  useEffect(() => {
+    if (prevWidth.current && width != prevWidth.current) {
+      if (width < prevWidth.current) {
+        console.log("Window got narrower");
+      } else {
+        console.log("Window got wider");
+      }
+    }
+  }, [prevWidth.current, width]);
+
+  useEffect(() => {
+    prevWidth.current = width;
+  }, [width]);
+
+  return null;
+}
+```
+
+### react-delta Solution
+```jsx
+function LogWindowGrowth() {
+  const { width } = useWindowSize();
+  const delta = useDelta(width)
+
+  useEffect(() => {
+    if (delta && delta.prev) {
+      if (delta.prev < delta.curr) {
+        console.log("Window got narrower");
+      } else {
+        console.log("Window got wider");
+      }
+    }
+  });
+
+  return null;
+}
+```
+
+### react-delta Alternate Solution One
+
+```jsx
+function LogWindowGrowth() {
+  const { width } = useWindowSize();
+  const prevWidth = usePrevious(width);
+
+  useEffect(() => {
+    if (prevWidth) {
+      if (width < prevWidth) {
+        console.log("Window got narrower");
+      } else {
+        console.log("Window got wider");
+      }
+    }
+  });
+
+  return null;
+}
+```
+
+
+### react-delta Alternate Solution Two
+```jsx
+function LogWindowGrowth() {
+  const { width } = useWindowSize();
+  const delta = useDelta(width);
+
+  useConditionalEffect(() => {
+    console.log("Window got narrower");
+  }, delta && delta.prev && delta.curr < delta.prev);
+
+  useConditionalEffect(() => {
+    console.log("Window got wider");
+  }, delta && delta.prev && delta.curr > delta.prev);
+
+  return null;
+}
+```
+
 ## API
 
 ### `useConditionalEffect(callback, condition)`
