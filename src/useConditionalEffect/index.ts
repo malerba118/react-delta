@@ -1,3 +1,3 @@
-import useConditionalEffect from './useConditionalEffect'
+import useConditionalEffect from './useConditionalEffect';
 
-export default useConditionalEffect
+export default useConditionalEffect;

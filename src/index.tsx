@@ -1,12 +1,12 @@
-import useConditionalEffect from './useConditionalEffect'
-import usePrevious from './usePrevious'
-import useLatest from './useLatest'
-import some from './some'
-import every from './every'
-import useDelta from './useDelta'
-import useDeltaArray from './useDeltaArray'
-import useDeltaObject from './useDeltaObject'
-import { Delta } from './shared'
+import useConditionalEffect from './useConditionalEffect';
+import usePrevious from './usePrevious';
+import useLatest from './useLatest';
+import some from './some';
+import every from './every';
+import useDelta from './useDelta';
+import useDeltaArray from './useDeltaArray';
+import useDeltaObject from './useDeltaObject';
+import { Delta } from './shared';
 
 export {
   useConditionalEffect,
@@ -18,4 +18,4 @@ export {
   useDeltaArray,
   useDeltaObject,
   Delta,
-}
+};

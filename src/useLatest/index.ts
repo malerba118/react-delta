@@ -1,3 +1,3 @@
-import useLatest from './useLatest'
+import useLatest from './useLatest';
 
-export default useLatest
+export default useLatest;

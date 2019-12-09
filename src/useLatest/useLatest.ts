@@ -1,4 +1,4 @@
-import { MutableRefObject } from 'react'
+import { MutableRefObject } from 'react';
 import { useRef } from "react";
 
 function useLatest<T>(value: T): MutableRefObject<T> {
@@ -7,4 +7,4 @@ function useLatest<T>(value: T): MutableRefObject<T> {
     return ref;
 }
 
-export default useLatest
+export default useLatest;

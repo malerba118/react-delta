@@ -1,3 +1,3 @@
-import useDeltaArray from './useDeltaArray'
+import useDeltaArray from './useDeltaArray';
 
-export default useDeltaArray
+export default useDeltaArray;

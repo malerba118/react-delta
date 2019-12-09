@@ -3,8 +3,8 @@
 
 export default {
     title: 'useDeltaObject'
-}
+};
 
 export const Basic = () => {
-    return null
-}
+    return null;
+};

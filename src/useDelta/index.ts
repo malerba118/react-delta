@@ -1,3 +1,3 @@
-import useDelta from './useDelta'
+import useDelta from './useDelta';
 
-export default useDelta
+export default useDelta;

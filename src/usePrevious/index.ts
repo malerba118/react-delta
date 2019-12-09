@@ -1,3 +1,3 @@
-import usePrevious from './usePrevious'
+import usePrevious from './usePrevious';
 
-export default usePrevious
+export default usePrevious;

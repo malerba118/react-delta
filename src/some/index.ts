@@ -1,3 +1,3 @@
-import some from './some'
+import some from './some';
 
-export default some
+export default some;

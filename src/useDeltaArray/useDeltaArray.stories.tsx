@@ -3,8 +3,8 @@
 
 export default {
     title: 'useDeltaArray'
-}
+};
 
 export const Basic = () => {
-    return null
-}
+    return null;
+};

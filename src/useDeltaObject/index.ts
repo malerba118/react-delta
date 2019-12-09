@@ -1,3 +1,3 @@
-import useDeltaObject from './useDeltaObject'
+import useDeltaObject from './useDeltaObject';
 
-export default useDeltaObject
+export default useDeltaObject;

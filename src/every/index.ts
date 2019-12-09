@@ -1,3 +1,3 @@
-import every from './every'
+import every from './every';
 
-export default every
+export default every;
