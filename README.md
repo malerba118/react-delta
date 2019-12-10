@@ -11,7 +11,7 @@ npm install --save react-delta
 ```
 
 ## Overview
-If you've used `useEffect` extensively, you've surely found yourself in tricky situations. For example, maybe you've wanted access to a value from a previous render to know *how* a variable has changed since the last render and not just that it *has* changed. Or maybe the linter has yelled at you to include all dependencies in the `useEffect` dependency array, but doing so would cause your effect to run too frequently. Or maybe you've wanted to use deep equality to trigger an effect instead of shallow equality. Or maybe you've had to store values in refs in order to access the latest value inside of `useEffect`. The problem with `useEffect` is that it limits your ability to compare old values to new values. `react-delta` gives you delta utilities to determine exactly when and how variables have changed across renders as well as the ability to run effects based on these deltas.
+If you've used `useEffect` in your day-to-day, you've surely found yourself in tricky situations. For example, maybe you've wanted access to a value from a previous render to know *how* a variable has changed since the last render and not just that it *has* changed. Or maybe the linter has yelled at you to include all dependencies in the `useEffect` dependency array, but doing so would cause your effect to run too frequently. Or maybe you've wanted to use deep equality to trigger an effect instead of shallow equality. Or maybe you've had to store values in refs in order to access the latest value inside of `useEffect`. The problem with `useEffect` is that it limits your ability to compare old values to new values. `react-delta` gives you delta utilities to determine exactly when and how variables have changed across renders as well as the ability to run effects based on these deltas.
 
 ## Scenario
 You want to log when the window width has increased and when it has decreased. Below we see how we might approach this problem traditionally, and how we can better approach it using `react-delta`.
@@ -99,6 +99,21 @@ function LogWindowGrowth() {
   return null;
 }
 ```
+
+## Demos
+
+### usePrevious
+![usePrevious-demo](https://user-images.githubusercontent.com/5760059/70490266-9214c100-1ac3-11ea-874b-eedf2dd48561.gif)
+
+### useDelta
+![useDelta-demo](https://user-images.githubusercontent.com/5760059/70490276-99d46580-1ac3-11ea-8fa6-ceccf813286a.gif)
+
+### useDeltaObject
+![useDeltaObject-demo](https://user-images.githubusercontent.com/5760059/70490318-b7093400-1ac3-11ea-9b3f-0656bf5056a6.gif)
+
+### useDeltaArray
+![useDeltaArray-demo](https://user-images.githubusercontent.com/5760059/70490371-c5575000-1ac3-11ea-9674-70393b5a243a.gif)
+
 
 ## API
 
