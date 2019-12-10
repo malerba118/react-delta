@@ -182,6 +182,77 @@ const useFetch = (url) => {
 }
 ```
 
+### `useDeltaObject(obj, options)`
+
+Determines the deltas of the values of the passed object. This is useful for watching many values at once. For example, you could use this hook to find the deltas of all props.
+
+#### Signature
+```tsx
+useDeltaObject<T extends {}>(obj: T): DeltaObject<T>;
+```
+
+#### Parameters
+
+* **`obj`**: **required** - an object whose values will be watched across renders.
+* **`options`**: **optional [default { deep: false }]**
+  - **`deep`**: a boolean indicating whether to use deep equality when comparing current values to previous values.
+
+#### Returns
+An object with the same keys as the passed object, but whose values represent the deltas of the passed object's values.
+
+
+#### Usage
+
+```jsx
+import { useDeltaObject, some, useConditionalEffect } from 'react-delta'
+
+const LogPropsOnChange = (props) => {
+    const deltas = useDeltaObject(props)
+
+    useConditionalEffect(() => {
+        console.log('At least one prop changed')
+    }, some(Object.values(deltas)))
+    
+    return null
+}
+```
+
+
+### `useDeltaArray(array, options)`
+
+Determines the deltas of the values of the passed object. This is useful for watching many values at once.
+
+#### Signature
+```tsx
+useDeltaArray<T extends any[]>(array: T): DeltaArray<T>;
+```
+
+#### Parameters
+
+* **`obj`**: **required** - an object whose values will be watched across renders.
+* **`options`**: **optional [default { deep: false }]**
+  - **`deep`**: a boolean indicating whether to use deep equality when comparing current values to previous values.
+
+#### Returns
+An array with the same length as the passed array, but whose values represent the deltas of the passed arrays's values.
+
+
+#### Usage
+
+```jsx
+import { useDeltaArray, some, useConditionalEffect } from 'react-delta'
+
+const FooFetcher = ({page, search}) => {
+    const [pageDelta, searchDelta] = useDeltaArray([page, search])
+
+    useConditionalEffect(() => {
+        fetch(`http://foo.com?search=${search}&page=${page}`)
+    }, some([pageDelta, searchDelta]))
+    
+    return null
+}
+```
+
 ### Types
 
 ### `Delta`
