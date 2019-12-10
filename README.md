@@ -165,6 +165,43 @@ const useEvenCountLogger = (count) => {
 }
 ```
 
+### `usePrevious(value, options)`
+
+Gets the value of the observed variable from the previous render.
+
+#### Signature
+```tsx
+usePrevious<T>(value: T): Optional<T>;
+```
+
+#### Parameters
+
+* **`value`**: **required** - a value to watch across renders.
+
+#### Returns
+The value passed to this hook during the previous render or undefined (if the first render).
+
+#### Usage
+
+```jsx
+import { usePrevious } from 'react-delta';
+
+function useLogWindowGrowth() {
+  const { width } = useWindowSize();
+  const prevWidth = usePrevious(width);
+
+  useEffect(() => {
+    if (prevWidth && prevWidth !== width) {
+      if (width < prevWidth) {
+        console.log("Window got narrower");
+      } else {
+        console.log("Window got wider");
+      }
+    }
+  });
+}
+```
+
 
 ### `useDelta(value, options)`
 
@@ -172,7 +209,7 @@ Determines the delta of `value` between the current and the previous render.
 
 #### Signature
 ```tsx
-useDelta<T>(value: T): Nullable<Delta<T>>;
+useDelta<T>(value: T, options: Options): Nullable<Delta<T>>;
 ```
 
 #### Parameters
@@ -205,7 +242,7 @@ Determines the deltas of the values of the passed object. This is useful for wat
 
 #### Signature
 ```tsx
-useDeltaObject<T extends {}>(obj: T): DeltaObject<T>;
+useDeltaObject<T extends {}>(obj: T, options: Options): DeltaObject<T>;
 ```
 
 #### Parameters
@@ -241,7 +278,7 @@ Determines the deltas of the values of the passed object. This is useful for wat
 
 #### Signature
 ```tsx
-useDeltaArray<T extends any[]>(array: T): DeltaArray<T>;
+useDeltaArray<T extends any[]>(array: T, options: Options): DeltaArray<T>;
 ```
 
 #### Parameters
