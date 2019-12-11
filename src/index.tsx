@@ -1,4 +1,4 @@
-import useConditionalEffect from './useConditionalEffect';
+import useConditionalEffect, { ConditionalEffectCallback, CleanupCallback } from './useConditionalEffect';
 import usePrevious from './usePrevious';
 import useLatest from './useLatest';
 import some from './some';
@@ -21,5 +21,7 @@ export {
   DeltaArray,
   DeltaObject,
   Nullable,
-  Optional
+  Optional,
+  ConditionalEffectCallback,
+  CleanupCallback,
 };
