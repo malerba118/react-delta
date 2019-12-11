@@ -3,7 +3,7 @@ import useConditionalEffect from './useConditionalEffect';
 import { mount } from 'enzyme';
 
 interface Props {
-    condition: boolean;
+    condition?: boolean;
     effect: Function;
     cleanup: Function;
 }
@@ -95,6 +95,20 @@ describe('useConditionalEffect', () => {
     wrapper.setProps({condition: true});
 
     expect(effectObserver).toHaveBeenCalledTimes(1);
+    expect(cleanupObserver).toHaveBeenCalledTimes(0);
+  });
+
+  it('should not run if undefined', () => {
+    const effectObserver = jest.fn();
+    const cleanupObserver = jest.fn();
+
+    const wrapper = mount(
+        <App effect={effectObserver} cleanup={cleanupObserver} condition={undefined} />
+    );
+
+    wrapper.unmount()
+
+    expect(effectObserver).toHaveBeenCalledTimes(0);
     expect(cleanupObserver).toHaveBeenCalledTimes(0);
   });
 });

@@ -6,7 +6,7 @@ export default {
     title: 'useDelta'
 };
 
-export const PrimitiveState = () => {
+export const Primitives = () => {
     const [count, setCount] = useState(0);
     const [unrelatedState, setUnrelatedState] = useState(false);
 
@@ -19,12 +19,12 @@ export const PrimitiveState = () => {
     return (
         <div>
             <button onClick={() => setCount(c => c + 1)}>Increment: {count}</button>
-            <button onClick={() => setUnrelatedState(p => !p)}>Toggle Unrelated State: {unrelatedState}</button>
+            <button onClick={() => setUnrelatedState(p => !p)}>Toggle Unrelated State: {String(unrelatedState)}</button>
         </div>
     );
 };
 
-export const ObjectStateShallow = () => {
+export const Shallow = () => {
     const [state, setState] = useState({ count: 0 });
     const [unrelatedState, setUnrelatedState] = useState(false);
 
@@ -36,14 +36,15 @@ export const ObjectStateShallow = () => {
 
     return (
         <div>
-            <button onClick={() => setState(s => ({count: s.count + 1}))}>Increment: {JSON.stringify(state)}</button>            
-            <button onClick={() => setUnrelatedState(p => !p)}>Toggle Unrelated State: {unrelatedState}</button>
+            <button onClick={() => setState(s => ({count: s.count}))}>Replace: {JSON.stringify(state)}</button>     
+            <button onClick={() => setState(s => ({count: s.count + 1}))}>Increment: {JSON.stringify(state)}</button>        
+            <button onClick={() => setUnrelatedState(p => !p)}>Toggle Unrelated State: {String(unrelatedState)}</button>
         </div>
     );
 };
 
 
-export const ObjectStateDeep = () => {
+export const Deep = () => {
     const [state, setState] = useState({ count: 0 });
     const [unrelatedState, setUnrelatedState] = useState(false);
 
@@ -55,8 +56,9 @@ export const ObjectStateDeep = () => {
 
     return (
         <div>
-            <button onClick={() => setState(s => ({count: s.count + 1}))}>Increment: {JSON.stringify(state)}</button>            
-            <button onClick={() => setUnrelatedState(p => !p)}>Toggle Unrelated State: {unrelatedState}</button>
+            <button onClick={() => setState(s => ({count: s.count}))}>Replace: {JSON.stringify(state)}</button>     
+            <button onClick={() => setState(s => ({count: s.count + 1}))}>Increment: {JSON.stringify(state)}</button>          
+            <button onClick={() => setUnrelatedState(p => !p)}>Toggle Unrelated State: {String(unrelatedState)}</button>
         </div>
     );
 };
