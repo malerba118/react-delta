@@ -40,6 +40,8 @@ function useWindowLogger() {
 
 ### Cool Solution
 ```jsx
+import { useDelta } from 'react-delta';
+
 function useWindowLogger() {
   const { width } = useWindowSize();
   const delta = useDelta(width)
@@ -59,6 +61,8 @@ function useWindowLogger() {
 ### Alternate Cool Solution
 
 ```jsx
+import { usePrevious } from 'react-delta';
+
 function useWindowLogger() {
   const { width } = useWindowSize();
   const prevWidth = usePrevious(width);
@@ -78,6 +82,8 @@ function useWindowLogger() {
 
 ### Anotha Alternate Cool Solution
 ```jsx
+import { useDelta, useConditionalEffect } from 'react-delta';
+
 function useWindowLogger() {
   const { width } = useWindowSize();
   const delta = useDelta(width);
@@ -97,6 +103,8 @@ You want to log only when *both* width and height of the window have changed, bu
 
 ### No Problem
 ```jsx
+import { useDeltaArray, every, useConditionalEffect } from 'react-delta';
+
 function useWindowLogger() {
   const { width, height } = useWindowSize();
   const deltas = useDeltaArray([width, height]);
@@ -108,10 +116,12 @@ function useWindowLogger() {
 ```
 
 ## Scenario Three
-You set up an interval when the component mounts and its callback needs access to data from future renders.
+You want to set up an interval when the component mounts and its callback needs access to data from future renders.
 
 ### How About This?
 ```jsx
+import { useLatest } from 'react-delta';
+
 function useIntervalLogger(data) {
   const dataRef = useLatest(data);
 
