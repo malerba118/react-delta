@@ -136,6 +136,10 @@ function useIntervalLogger(data) {
 
 ## Demos
 
+
+See this [playground](https://codesandbox.io/s/react-delta-playground-qhbll) to mess around with `react-delta`.
+
+
 ### usePrevious
 ![usePrevious-demo](https://user-images.githubusercontent.com/5760059/70490266-9214c100-1ac3-11ea-874b-eedf2dd48561.gif)
 
@@ -162,7 +166,7 @@ function useIntervalLogger(data) {
 
 ### `usePrevious(value)`
 
-Gets the value of the observed variable from the previous render.
+Gets the value from the previous render of the observed variable.
 
 #### Signature
 ```tsx
@@ -222,6 +226,10 @@ function useIntervalLogger(data) {
   const dataRef = useLatest(data);
 
   useEffect(() => {
+    // The interval will only be set up on mount,
+    // but ref will allow interval callback to
+    // access latest data value through the lifetime
+    // of the component.
     const id = setInterval(() => {
       console.log(dataRef.current);
     }, 3000);
@@ -301,7 +309,7 @@ const LogPropsOnChange = (props) => {
 
 ### `useDeltaArray(array, options)`
 
-Determines the deltas of the values of the passed object. This is useful for watching many values at once.
+Determines the deltas of the values of the passed array. This is useful for watching many values at once.
 
 #### Signature
 ```tsx
@@ -310,7 +318,7 @@ useDeltaArray<T extends any[]>(array: T, options?: { deep?: boolean }): DeltaArr
 
 #### Parameters
 
-* **`obj`**: **required** - an object whose values will be watched across renders.
+* **`array`**: **required** - an array whose values will be watched across renders.
 * **`options`**: **optional [default { deep: false }]**
   - **`deep`**: a boolean indicating whether to use deep equality when comparing current values to previous values.
 
