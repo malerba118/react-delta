@@ -18,7 +18,7 @@ You want to log when the window width has increased and when it has decreased. B
 
 ### Gross Solution
 ```jsx
-function LogWindowGrowth() {
+function useWindowLogger() {
   const { width } = useWindowSize();
   const prevWidth = useRef();
 
@@ -35,14 +35,12 @@ function LogWindowGrowth() {
   useEffect(() => {
     prevWidth.current = width;
   }, [width]);
-
-  return null;
 }
 ```
 
 ### Cool Solution
 ```jsx
-function LogWindowGrowth() {
+function useWindowLogger() {
   const { width } = useWindowSize();
   const delta = useDelta(width)
 
@@ -55,20 +53,18 @@ function LogWindowGrowth() {
       }
     }
   });
-
-  return null;
 }
 ```
 
 ### Alternate Cool Solution
 
 ```jsx
-function LogWindowGrowth() {
+function useWindowLogger() {
   const { width } = useWindowSize();
   const prevWidth = usePrevious(width);
 
   useEffect(() => {
-    if (prevWidth) {
+    if (prevWidth && prevWidth !== width) {
       if (width < prevWidth) {
         console.log("Window got narrower");
       } else {
@@ -76,15 +72,13 @@ function LogWindowGrowth() {
       }
     }
   });
-
-  return null;
 }
 ```
 
 
 ### Anotha Alternate Cool Solution
 ```jsx
-function LogWindowGrowth() {
+function useWindowLogger() {
   const { width } = useWindowSize();
   const delta = useDelta(width);
 
@@ -95,25 +89,38 @@ function LogWindowGrowth() {
   useConditionalEffect(() => {
     console.log("Window got wider");
   }, delta && delta.prev && delta.curr > delta.prev);
-
-  return null;
 }
 ```
 
 ## Scenario Two
 You want to log only when *both* width and height of the window have changed, but not if only one has changed.
 
-### Dope Solution
+### No Problem
 ```jsx
-function LogWindowGrowth() {
+function useWindowLogger() {
   const { width, height } = useWindowSize();
   const deltas = useDeltaArray([width, height]);
 
   useConditionalEffect(() => {
     console.log("Window width and height changed simultaneously");
   }, every(deltas));
+}
+```
 
-  return null;
+## Scenario Three
+You set up an interval when the component mounts and its callback needs access to data from future renders.
+
+### How About This?
+```jsx
+function useIntervalLogger(data) {
+  const dataRef = useLatest(data);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      console.log(dataRef.current);
+    }, 3000);
+    return () => clearInterval(id);
+  }, []);
 }
 ```
 
@@ -134,38 +141,16 @@ function LogWindowGrowth() {
 
 ## API
 
-### `useConditionalEffect(callback, condition)`
+- [usePrevious](#usepreviousvalue)
+- [useLatest](#uselatestvalue)
+- [useDelta](#usedeltavalue-options)
+- [useDeltaObject](#usedeltaobjectobj-options)
+- [useDeltaArray](#usedeltaarrayarray-options)
+- [useConditionalEffect](#useconditionaleffectcallback-condition)
+- [some](#somearray)
+- [every](#everyarray)
 
-Runs an effect when the condition is true. If the effect returns a cleanup function, the cleanup function will run before the next effect.
-
-#### Signature
-```tsx
-useConditionalEffect(callback: ConditionalEffectCallback, condition?: boolean): void;
-```
-
-#### Parameters
-
-* **`callback`**: **required** - a function that will execute if the condition is true. This callback can return a cleanup function.
-* **`condition`**: **optional [default true]** - a boolean indicating whether the effect should run. The effect callback executes when the condition is true.
-
-#### Returns
-This method has no return value.
-
-#### Usage
-
-```jsx
-import { useConditionalEffect } from 'react-delta'
-
-const useEvenCountLogger = (count) => {
-
-  useConditionalEffect(() => {
-    console.log(count)
-  }, count % 2 === 0) 
-
-}
-```
-
-### `usePrevious(value, options)`
+### `usePrevious(value)`
 
 Gets the value of the observed variable from the previous render.
 
@@ -186,7 +171,7 @@ The value passed to this hook during the previous render or undefined (if the fi
 ```jsx
 import { usePrevious } from 'react-delta';
 
-function useLogWindowGrowth() {
+function useWindowLogger() {
   const { width } = useWindowSize();
   const prevWidth = usePrevious(width);
 
@@ -202,6 +187,38 @@ function useLogWindowGrowth() {
 }
 ```
 
+### `useLatest(value)`
+
+Gets a ref which always points to the value from the most recent render. This is useful when you want to access a value from a future render inside of an older render.
+
+#### Signature
+```tsx
+useLatest<T>(value: T): MutableRefObject<T>;
+```
+
+#### Parameters
+
+* **`value`**: **required** - a value to watch across renders.
+
+#### Returns
+A ref to the value passed to this hook in the most recent render.
+
+#### Usage
+
+```jsx
+import { useLatest } from 'react-delta';
+
+function useIntervalLogger(data) {
+  const dataRef = useLatest(data);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      console.log(dataRef.current);
+    }, 3000);
+    return () => clearInterval(id);
+  }, []);
+}
+```
 
 ### `useDelta(value, options)`
 
@@ -209,7 +226,7 @@ Determines the delta of `value` between the current and the previous render.
 
 #### Signature
 ```tsx
-useDelta<T>(value: T, options: Options): Nullable<Delta<T>>;
+useDelta<T>(value: T, options?: { deep?: boolean }): Nullable<Delta<T>>;
 ```
 
 #### Parameters
@@ -242,7 +259,7 @@ Determines the deltas of the values of the passed object. This is useful for wat
 
 #### Signature
 ```tsx
-useDeltaObject<T extends {}>(obj: T, options: Options): DeltaObject<T>;
+useDeltaObject<T extends {}>(obj: T, options?: { deep?: boolean }): DeltaObject<T>;
 ```
 
 #### Parameters
@@ -278,7 +295,7 @@ Determines the deltas of the values of the passed object. This is useful for wat
 
 #### Signature
 ```tsx
-useDeltaArray<T extends any[]>(array: T, options: Options): DeltaArray<T>;
+useDeltaArray<T extends any[]>(array: T, options?: { deep?: boolean }): DeltaArray<T>;
 ```
 
 #### Parameters
@@ -307,7 +324,103 @@ const FooFetcher = ({page, search}) => {
 }
 ```
 
-### Types
+
+### `useConditionalEffect(callback, condition)`
+
+Runs an effect when the condition is true. If the effect returns a cleanup function, the cleanup function will run before the next effect.
+
+#### Signature
+```tsx
+useConditionalEffect(callback: ConditionalEffectCallback, condition: boolean): void;
+```
+
+#### Parameters
+
+* **`callback`**: **required** - a function that will execute if the condition is true. This callback can return a cleanup function.
+* **`condition`**: **optional [default true]** - a boolean indicating whether the effect should run. The effect callback executes when the condition is true.
+
+#### Returns
+This method has no return value.
+
+#### Usage
+
+```jsx
+import { useConditionalEffect } from 'react-delta'
+
+const useEvenCountLogger = (count) => {
+
+  useConditionalEffect(() => {
+    console.log(count)
+  }, count % 2 === 0) 
+
+}
+```
+
+### `some(array)`
+
+Indicates whether some value in the array is truthy.
+
+#### Signature
+```tsx
+some(array: any[]): boolean;
+```
+
+#### Parameters
+
+* **`array`**: **required** - an array of values that will be coerced to booleans.
+
+#### Returns
+Returns true if any value in the array is truthy. Returns false if all values in the array are false or if the array is empty.
+
+#### Usage
+
+```jsx
+import { some, useDeltaObject, useConditionalEffect } from "react-delta";
+
+const SomePropChangeLogger = props => {
+  const deltas = useDeltaObject(props);
+
+  useConditionalEffect(() => {
+    console.log("At least one prop changed");
+  }, some(Object.values(deltas)));
+
+  return null;
+};
+```
+
+### `every(array)`
+
+Indicates whether every value in the array is truthy.
+
+#### Signature
+```tsx
+every(array: any[]): boolean;
+```
+
+#### Parameters
+
+* **`array`**: **required** - an array of values that will be coerced to booleans.
+
+#### Returns
+Returns true if every value in the array is truthy or if the array is empty. Returns false if any value in the array is false.
+
+#### Usage
+
+```jsx
+import { every, useDeltaObject, useConditionalEffect } from "react-delta";
+
+const EveryPropChangeLogger = props => {
+  const deltas = useDeltaObject(props);
+
+  useConditionalEffect(() => {
+    console.log("Every prop changed simultaneously");
+  }, every(Object.values(deltas)));
+
+  return null;
+};
+```
+
+## Type Definitions
 
 ### `Delta`
 ```ts
