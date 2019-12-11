@@ -6,7 +6,7 @@ import every from './every';
 import useDelta from './useDelta';
 import useDeltaArray from './useDeltaArray';
 import useDeltaObject from './useDeltaObject';
-import { Delta, DeltaArray, DeltaObject } from './shared';
+import { Delta, DeltaArray, DeltaObject, Nullable, Optional } from './shared';
 
 export {
   useConditionalEffect,
@@ -20,4 +20,6 @@ export {
   Delta,
   DeltaArray,
   DeltaObject,
+  Nullable,
+  Optional
 };
