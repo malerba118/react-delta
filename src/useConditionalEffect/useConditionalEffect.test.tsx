@@ -106,7 +106,7 @@ describe('useConditionalEffect', () => {
         <App effect={effectObserver} cleanup={cleanupObserver} condition={undefined} />
     );
 
-    wrapper.unmount()
+    wrapper.unmount();
 
     expect(effectObserver).toHaveBeenCalledTimes(0);
     expect(cleanupObserver).toHaveBeenCalledTimes(0);

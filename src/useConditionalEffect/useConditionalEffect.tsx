@@ -4,7 +4,7 @@ import useLatest from '../useLatest';
 type CleanupCallback = () => void
 type ConditionalEffectCallback = () => CleanupCallback | void
 
-function useConditionalEffect(callback: ConditionalEffectCallback, condition: boolean = false) {
+function useConditionalEffect(callback: ConditionalEffectCallback, condition = false) {
   // update to truthyCount should cause update to run
   const truthyCount = useRef(0);
   // update to callback should not cause effect to re-run
