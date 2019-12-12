@@ -2,20 +2,35 @@ import React from 'react';
 import { mount } from 'enzyme';
 import useDeltaArray from './useDeltaArray';
 
-interface Props {
+interface AppProps {
     count: number;
     obj: object;
     deep?: boolean;
     observer: Function;
 }
 
-const App = ({observer, count, obj, deep = false}: Props) => {
+const App = ({observer, count, obj, deep = false}: AppProps) => {
 
     const deltas = useDeltaArray([count, obj], { deep });
 
     observer(deltas);
 
     return null;
+};
+
+interface MismatchedKeysProps {
+  array: any[];
+  observer: Function;
+  deep?: boolean;
+}
+
+const MismatchedKeys = ({observer, array, deep = false}: MismatchedKeysProps) => {
+
+  const deltas = useDeltaArray(array, { deep });
+
+  observer(deltas);
+
+  return null;
 };
 
 const FIRST_RENDER_DELTAS = [{"curr": 0}, {"curr": {"id": 123}}];
@@ -117,5 +132,39 @@ describe('useDeltaArray', () => {
     const secondRenderDeltas = observer.mock.calls[1][0];
 
     expect(secondRenderDeltas).toEqual([null, {"curr": {"id": 234}, "prev": {"id": 123}}]);
+  });
+
+  it('longer array on nonfirst render should only return deltas for array keys from first render', () => {
+    const observer = jest.fn();
+    const wrapper = mount(
+      <MismatchedKeys observer={observer} array={[0, 0]} />
+    );
+
+    const firstRenderDeltas = observer.mock.calls[0][0];
+
+    expect(firstRenderDeltas).toEqual([{"curr": 0}, {"curr": 0}]);
+
+    wrapper.setProps({array: [1, 0, 1]});
+
+    const secondRenderDeltas = observer.mock.calls[1][0];
+
+    expect(secondRenderDeltas).toEqual([{"curr": 1, "prev": 0}, null]);
+  });
+
+  it('shorter array on nonfirst render should return deltas for array keys from first render', () => {
+    const observer = jest.fn();
+    const wrapper = mount(
+      <MismatchedKeys observer={observer} array={[0, 0]} />
+    );
+
+    const firstRenderDeltas = observer.mock.calls[0][0];
+
+    expect(firstRenderDeltas).toEqual([{"curr": 0}, {"curr": 0}]);
+
+    wrapper.setProps({array: [1]});
+
+    const secondRenderDeltas = observer.mock.calls[1][0];
+
+    expect(secondRenderDeltas).toEqual([{"curr": 1, "prev": 0}, {"curr": undefined, "prev": 0}]);
   });
 });

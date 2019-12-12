@@ -1,6 +1,6 @@
 # react-delta
 
-> Toolbelt for more flexible effects in react
+> Toolbelt for more flexible effects/refs in react
 
 [![NPM](https://img.shields.io/npm/v/react-delta.svg)](https://www.npmjs.com/package/react-delta) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
@@ -273,7 +273,9 @@ const useFetch = (url) => {
 
 ### `useDeltaObject(obj, options)`
 
-Determines the deltas of the values of the passed object. This is useful for watching many values at once. For example, you could use this hook to find the deltas of all props.
+Determines the deltas of the values of the passed object. This is useful for watching many values at once. For example, you could use this hook to find the deltas of all props. 
+
+**Note**: Only the keys/values of the object passed during the first render will be observed. If different keys are passed after the first render, they will be ignored. For this reason, it is recommend that you explicitly pass object keys (eg. `useDeltaObject({ foo: props.foo, bar: props.bar })` as opposed to `useDeltaObject(props)`).
 
 #### Signature
 ```tsx
@@ -310,6 +312,8 @@ const LogPropsOnChange = (props) => {
 ### `useDeltaArray(array, options)`
 
 Determines the deltas of the values of the passed array. This is useful for watching many values at once.
+
+**Note**: Only the keys/values of the array passed during the first render will be observed. If an array of greater length is passed after the first render, the extra indexes will be ignored. For this reason, it is recommend that you explicitly pass array indexes (eg. `useDeltaArray([props.foo, props.bar])` as opposed to `useDeltaArray(Object.values(props))`).
 
 #### Signature
 ```tsx
@@ -355,7 +359,7 @@ useConditionalEffect(callback: ConditionalEffectCallback, condition: boolean): v
 #### Parameters
 
 * **`callback`**: **required** - a function that will execute if the condition is true. This callback can return a cleanup function.
-* **`condition`**: **optional [default true]** - a boolean indicating whether the effect should run. The effect callback executes when the condition is true.
+* **`condition`**: **required** - a boolean indicating whether the effect should run. The effect callback executes when the condition is true.
 
 #### Returns
 This method has no return value.
