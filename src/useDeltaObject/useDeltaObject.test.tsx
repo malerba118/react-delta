@@ -17,6 +17,15 @@ const App = ({observer, obj, deep = false}: Props) => {
     return null;
 };
 
+const MismatchedKeys = ({observer, obj, deep = false}: Props) => {
+
+  const deltas = useDeltaObject(obj, { deep });
+
+  observer(deltas);
+
+  return null;
+};
+
 const FIRST_RENDER_DELTAS = { obj: {"curr": {"id": 123} } };
 
 describe('useDeltaObject', () => {
@@ -116,5 +125,56 @@ describe('useDeltaObject', () => {
     const secondRenderDeltas = observer.mock.calls[1][0];
 
     expect(secondRenderDeltas).toEqual({obj:{"curr": {"id": 234}, "prev": {"id": 123}}});
+  });
+
+  it('different keys on non-first render should return object with keys from first render', () => {
+    const observer = jest.fn();
+    const wrapper = mount(
+      <MismatchedKeys observer={observer} obj={{"id": 123}} deep={true} />
+    );
+
+    const firstRenderDeltas = observer.mock.calls[0][0];
+
+    expect(firstRenderDeltas).toEqual({"id": {"curr": 123}});
+
+    wrapper.setProps({obj: {"name": "jorge"}});
+
+    const secondRenderDeltas = observer.mock.calls[1][0];
+
+    expect(secondRenderDeltas).toEqual({"id": {"curr": undefined, "prev": 123}});
+  });
+
+  it('more keys on non-first render should return object with keys from first render', () => {
+    const observer = jest.fn();
+    const wrapper = mount(
+      <MismatchedKeys observer={observer} obj={{"id": 123}} deep={false} />
+    );
+
+    const firstRenderDeltas = observer.mock.calls[0][0];
+
+    expect(firstRenderDeltas).toEqual({"id": {"curr": 123}});
+
+    wrapper.setProps({obj: {"id": 124, "name": "jorge"}});
+
+    const secondRenderDeltas = observer.mock.calls[1][0];
+
+    expect(secondRenderDeltas).toEqual({"id": {"curr": 124, "prev": 123}});
+  });
+
+  it('less keys on non-first render should return object with keys from first render', () => {
+    const observer = jest.fn();
+    const wrapper = mount(
+      <MismatchedKeys observer={observer} obj={{"id": 123}} deep={true} />
+    );
+
+    const firstRenderDeltas = observer.mock.calls[0][0];
+
+    expect(firstRenderDeltas).toEqual({"id": {"curr": 123}});
+
+    wrapper.setProps({obj: {}});
+
+    const secondRenderDeltas = observer.mock.calls[1][0];
+
+    expect(secondRenderDeltas).toEqual({"id": {"curr": undefined, "prev": 123}});
   });
 });
