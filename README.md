@@ -1,6 +1,6 @@
 # react-delta
 
-> Toolbelt for more flexible effects/refs in react
+> Toolbelt for more flexible effects in react
 
 [![NPM](https://img.shields.io/npm/v/react-delta.svg)](https://www.npmjs.com/package/react-delta) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
@@ -178,7 +178,7 @@ usePrevious<T>(value: T): Optional<T>;
 
 #### Parameters
 
-* **`value`**: **required** - a value to watch across renders.
+* **`value`**: **required** - a variable to observe across renders.
 
 #### Returns
 The value passed to this hook during the previous render or undefined (if the first render).
@@ -215,7 +215,7 @@ useLatest<T>(value: T): MutableRefObject<T>;
 
 #### Parameters
 
-* **`value`**: **required** - a value to watch across renders.
+* **`value`**: **required** - a variable to observe across renders.
 
 #### Returns
 A ref to the value passed to this hook in the most recent render.
@@ -252,12 +252,12 @@ useDelta<T>(value: T, options?: { deep?: boolean }): Nullable<Delta<T>>;
 
 #### Parameters
 
-* **`value`**: **required** - a value to watch across renders.
+* **`value`**: **required** - a variable to observe across renders.
 * **`options`**: **optional [default { deep: false }]**
-  - **`deep`**: a boolean indicating whether to use deep equality when comparing current value to previous value.
+  - **`deep`**: a boolean indicating whether to use deep equality when comparing the current value to the previous value.
 
 #### Returns
-If the watched value has changed between the current and the previous render, a delta object is returned. If nothing has changed, then `null` is returned.
+If the observed variable has changed between the current and the previous render, a delta object is returned. If nothing has changed, then `null` is returned.
 
 
 #### Usage
@@ -276,9 +276,9 @@ const useFetch = (url) => {
 
 ### `useDeltaObject(obj, options)`
 
-Determines the deltas of the values of the passed object. This is useful for watching many values at once. For example, you could use this hook to find the deltas of all props. 
+Determines the deltas of the values of the passed object. This is useful for observing many variables at once. For example, you could use this hook to find the deltas of all props. 
 
-**Note**: Only the keys/values of the object passed during the first render will be observed. If different keys are passed after the first render, they will be ignored. For this reason, it is recommend that you explicitly pass object keys (eg. `useDeltaObject({ foo: props.foo, bar: props.bar })` as opposed to `useDeltaObject(props)`).
+**Note**: Only the keys of the object passed during the first render will be observed. If different keys are passed after the first render, they will be ignored. For this reason, it is recommend that you explicitly pass object keys (eg. `useDeltaObject({ foo: props.foo, bar: props.bar })` as opposed to `useDeltaObject(props)`).
 
 #### Signature
 ```tsx
@@ -287,9 +287,9 @@ useDeltaObject<T extends {}>(obj: T, options?: { deep?: boolean }): DeltaObject<
 
 #### Parameters
 
-* **`obj`**: **required** - an object whose values will be watched across renders.
+* **`obj`**: **required** - an object whose values will be observed across renders.
 * **`options`**: **optional [default { deep: false }]**
-  - **`deep`**: a boolean indicating whether to use deep equality when comparing current values to previous values.
+  - **`deep`**: a boolean indicating whether to use deep equality when comparing the current values to the previous values.
 
 #### Returns
 An object with the same keys as the passed object, but whose values represent the deltas of the passed object's values.
@@ -314,9 +314,9 @@ const LogPropsOnChange = (props) => {
 
 ### `useDeltaArray(array, options)`
 
-Determines the deltas of the values of the passed array. This is useful for watching many values at once.
+Determines the deltas of the values of the passed array. This is useful for observing many values at once.
 
-**Note**: Only the keys/values of the array passed during the first render will be observed. If an array of greater length is passed after the first render, the extra indexes will be ignored. For this reason, it is recommend that you explicitly pass array indexes (eg. `useDeltaArray([props.foo, props.bar])` as opposed to `useDeltaArray(Object.values(props))`).
+**Note**: Only the indexes of the array passed during the first render will be observed. If an array of greater length is passed after the first render, the extra indexes will be ignored. For this reason, it is recommend that you explicitly pass array indexes (eg. `useDeltaArray([props.foo, props.bar])` as opposed to `useDeltaArray(Object.values(props))`).
 
 #### Signature
 ```tsx
@@ -325,9 +325,9 @@ useDeltaArray<T extends any[]>(array: T, options?: { deep?: boolean }): DeltaArr
 
 #### Parameters
 
-* **`array`**: **required** - an array whose values will be watched across renders.
+* **`array`**: **required** - an array whose values will be observed across renders.
 * **`options`**: **optional [default { deep: false }]**
-  - **`deep`**: a boolean indicating whether to use deep equality when comparing current values to previous values.
+  - **`deep`**: a boolean indicating whether to use deep equality when comparing the current values to the previous values.
 
 #### Returns
 An array with the same length as the passed array, but whose values represent the deltas of the passed arrays's values.
