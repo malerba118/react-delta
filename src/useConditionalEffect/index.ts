@@ -1,8 +1,7 @@
-import useConditionalEffect, { ConditionalEffectCallback, CleanupCallback } from './useConditionalEffect';
+import useConditionalEffect, {
+  ConditionalEffectCallback
+} from "./useConditionalEffect";
 
-export {
-    ConditionalEffectCallback,
-    CleanupCallback
-};
+export { ConditionalEffectCallback };
 
 export default useConditionalEffect;

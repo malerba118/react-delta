@@ -164,6 +164,7 @@ See this [playground](https://codesandbox.io/s/react-delta-playground-qhbll) to 
 - [useDeltaObject](#usedeltaobjectobj-options)
 - [useDeltaArray](#usedeltaarrayarray-options)
 - [useConditionalEffect](#useconditionaleffectcallback-condition)
+- [useConditionalLayoutEffect](#useconditionallayouteffectcallback-condition)
 - [some](#somearray)
 - [every](#everyarray)
 
@@ -352,17 +353,17 @@ const FooFetcher = ({page, search}) => {
 
 ### `useConditionalEffect(callback, condition)`
 
-Runs an effect when the condition is true. If the effect returns a cleanup function, the cleanup function will run before the next effect.
+Runs an effect when the condition is truthy. If the effect returns a cleanup function, the cleanup function will run before the next effect.
 
 #### Signature
 ```tsx
-useConditionalEffect(callback: ConditionalEffectCallback, condition: boolean): void;
+useConditionalEffect(callback: ConditionalEffectCallback, condition: any): void;
 ```
 
 #### Parameters
 
-* **`callback`**: **required** - a function that will execute if the condition is true. This callback can return a cleanup function.
-* **`condition`**: **required** - a boolean indicating whether the effect should run. The effect callback executes when the condition is true.
+* **`callback`**: **required** - a function that will execute if the condition is truthy. This callback can return a cleanup function.
+* **`condition`**: **required** - a value indicating whether the effect should run. The effect callback executes when the condition is truthy.
 
 #### Returns
 This method has no return value.
@@ -375,6 +376,37 @@ import { useConditionalEffect } from 'react-delta'
 const useEvenCountLogger = (count) => {
 
   useConditionalEffect(() => {
+    console.log(count)
+  }, count % 2 === 0) 
+
+}
+```
+
+### `useConditionalLayoutEffect(callback, condition)`
+
+Runs a layout effect when the condition is truthy. If the effect returns a cleanup function, the cleanup function will run before the next layout effect.
+
+#### Signature
+```tsx
+useConditionalLayoutEffect(callback: ConditionalLayoutEffectCallback, condition: any): void;
+```
+
+#### Parameters
+
+* **`callback`**: **required** - a function that will execute if the condition is truthy. This callback can return a cleanup function.
+* **`condition`**: **required** - a boolean indicating whether the layout effect should run. The layout effect callback executes when the condition is truthy.
+
+#### Returns
+This method has no return value.
+
+#### Usage
+
+```jsx
+import { useConditionalLayoutEffect } from 'react-delta'
+
+const useEvenCountLogger = (count) => {
+
+  useConditionalLayoutEffect(() => {
     console.log(count)
   }, count % 2 === 0) 
 
