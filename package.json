@@ -30,8 +30,8 @@
     "build": "rollup -c && npm run declaration",
     "declaration": "rm -rf declaration && tsc -p tsconfig.declaration.json",
     "start": "rollup -c -w",
-    "prepare": "yarn run build",
-    "predeploy": "cd example && yarn install && yarn run build",
+    "prepare": "npm run build",
+    "predeploy": "cd example && npm install && npm run build",
     "deploy": "gh-pages -d example/build",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
