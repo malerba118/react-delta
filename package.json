@@ -40,8 +40,8 @@
     "lodash.isequal": "^4.5.0"
   },
   "peerDependencies": {
-    "react": "^16.8.5 || ^17.0.0",
-    "react-dom": "^16.8.5 || ^17.0.0"
+    "react": "^16.8.5 || ^17.0.0 || ^18.0.0",
+    "react-dom": "^16.8.5 || ^17.0.0 || ^18.0.0"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.7.4",
